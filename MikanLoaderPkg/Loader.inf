@@ -14,7 +14,7 @@
 [Packages]
   MdePkg/MdePkg.dec
 
-[LibraryClassses]
+[LibraryClasses]
   UefiLib
   UefiApplicationEntryPoint
 
