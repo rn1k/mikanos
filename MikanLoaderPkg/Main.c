@@ -77,7 +77,7 @@ EFI_STATUS SaveMemoryMap(struct MemoryMap* map, EFI_FILE_PROTOCOL* file) {
        iter < (EFI_PHYSICAL_ADDRESS)map->buffer + map->map_size;
        iter += map->descriptor_size, i++) {
     EFI_MEMORY_DESCRIPTOR* desc = (EFI_MEMORY_DESCRIPTOR*)iter;
-    len = AsciiPrint(
+    len = AsciiSPrint(
         buf, sizeof(buf),
         "%u, %x, %-ls, %08lx, %lx, %lx\n",
         i, desc->Type, GetMemoryTypeUnicode(desc->Type),
@@ -116,7 +116,7 @@ EFI_STATUS OpenRootDir(EFI_HANDLE image_handle, EFI_FILE_PROTOCOL** root) {
 
 EFI_STATUS EFIAPI UefiMain(
     EFI_HANDLE image_handle,
-    EFI_SYSTEM_TABLE* system_tabl ) {
+    EFI_SYSTEM_TABLE* system_table) {
   Print(L"Hello, Mikan World!\n");
 
   // #@@range_begin(main)
