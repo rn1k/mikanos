@@ -1,5 +1,11 @@
 #include  <Uefi.h>
 #include  <Library/UefiLib.h>
+#include  <Library/UefiBootServicesTableLib.h>
+#include  <Library/PrintLib.h>
+#include  <Protocol/LoadedImage.h>
+#include  <Protocol/SimpleFileSystem.h>
+#include  <Protocol/DiskIo2.h>
+#include  <Protocol/BlockIo.h>
 
 // #@@range_begin(struct_memory_map)
 struct MemoryMap {
@@ -19,7 +25,7 @@ EFI_STATUS GetMemoryMap(struct MemoryMap* map) {
   }
 
   map->map_size = map->buffer_size;
-  return gBS->getMemoryMap(
+  return gBS->GetMemoryMap(
     &map->map_size,
     (EFI_MEMORY_DESCRIPTOR*)map->buffer, // 先頭ポインタ
     &map->map_key, // メモリマップを識別するための値を書き込む変数
@@ -59,10 +65,10 @@ EFI_STATUS SaveMemoryMap(struct MemoryMap* map, EFI_FILE_PROTOCOL* file) {
   // csvのヘッダ
   CHAR8* header = 
     "Index, Type, Type(namme), PhysicalStart, NumberOfPages, Attribute\n";
-  len = AsciiStrLen(header)
+  len = AsciiStrLen(header);
   file->Write(file, &len, header);
 
-  Print(L"map=>buffer = %08lx, map-<map_size = %08lx\n",
+  Print(L"map->buffer = %08lx, map->map_size = %08lx\n",
       map->buffer, map->map_size);
 
   EFI_PHYSICAL_ADDRESS iter;
@@ -80,7 +86,7 @@ EFI_STATUS SaveMemoryMap(struct MemoryMap* map, EFI_FILE_PROTOCOL* file) {
     file->Write(file, &len, buf);
   }
 
-  return EFI_SUCCESS
+  return EFI_SUCCESS;
 }
 
 EFI_STATUS OpenRootDir(EFI_HANDLE image_handle, EFI_FILE_PROTOCOL** root) {
@@ -127,7 +133,7 @@ EFI_STATUS EFIAPI UefiMain(
       EFI_FILE_MODE_READ | EFI_FILE_MODE_WRITE | EFI_FILE_MODE_CREATE, 0);
   
   SaveMemoryMap(&memmap, memmap_file);
-  memmap_file->Close(memmap_file)
+  memmap_file->Close(memmap_file);
   // #@@range_end(main)  
 
   Print(L"All done\n");
