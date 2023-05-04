@@ -58,7 +58,7 @@ EFI_STATUS SaveMemoryMap(struct MemoryMap* map, EFI_FILE_PROTOCOL* file) {
   UINTN len;
   // csvのヘッダ
   CHAR8* header = 
-    "Index, Type, Type(namme), PhysicalStart, NumberOfPages, Attribute\n";
+    "Index, Type, Type(name), PhysicalStart, NumberOfPages, Attribute\n";
   len = AsciiStrLen(header);
   file->Write(file, &len, header);
 
@@ -67,7 +67,7 @@ EFI_STATUS SaveMemoryMap(struct MemoryMap* map, EFI_FILE_PROTOCOL* file) {
 
   EFI_PHYSICAL_ADDRESS iter;
   int i;
-  for (iter = (EFI_PHYSICAL_ADDRESS)map->buffer, i=0;
+  for (iter = (EFI_PHYSICAL_ADDRESS)map->buffer, i = 0;
        iter < (EFI_PHYSICAL_ADDRESS)map->buffer + map->map_size;
        iter += map->descriptor_size, i++) {
     EFI_MEMORY_DESCRIPTOR* desc = (EFI_MEMORY_DESCRIPTOR*)iter;
