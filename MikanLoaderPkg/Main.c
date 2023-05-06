@@ -296,6 +296,7 @@ EFI_STATUS EFIAPI UefiMain(
   // #@@range_end(exit_bs)
 
   UINT64 entry_addr = *(UINT64*)(kernel_base_addr + 24);
+  
   // #@@range_begin(pass_frame_buffer_config)
   struct FrameBufferConfig config = {
     (UINT8*)gop->Mode->FrameBufferBase,

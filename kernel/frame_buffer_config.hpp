@@ -14,4 +14,3 @@ struct FrameBufferConfig {
   uint32_t vertical_resolution;
   enum PixelFormat pixel_format;
 };
-
